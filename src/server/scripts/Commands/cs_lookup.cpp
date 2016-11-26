@@ -179,7 +179,6 @@ public:
         for (CreatureTemplateContainer::const_iterator itr = ctc->begin(); itr != ctc->end(); ++itr)
         {
             uint32 id = itr->second.Entry;
-			uint32 id = itr->second.Entry;
 			uint8 localeIndex = handler->GetSessionDbLocaleIndex();
 			if (CreatureLocale const* creatureLocale = sObjectMgr->GetCreatureLocale(id))
 			{
@@ -567,6 +566,34 @@ public:
         GameObjectTemplateContainer const* gotc = sObjectMgr->GetGameObjectTemplates();
         for (GameObjectTemplateContainer::const_iterator itr = gotc->begin(); itr != gotc->end(); ++itr)
         {
+			uint8 localeIndex = handler->GetSessionDbLocaleIndex();
+			if (GameObjectLocale const* objectLocalte = sObjectMgr->GetGameObjectLocale(itr->second.entry))
+				 {
+				if (objectLocalte->Name.size() > localeIndex && !objectLocalte->Name[localeIndex].empty())
+					 {
+					std::string name = objectLocalte->Name[localeIndex];
+					
+						if (Utf8FitTo(name, wNamePart))
+						 {
+						if (maxResults && count++ == maxResults)
+							 {
+							handler->PSendSysMessage(LANG_COMMAND_LOOKUP_MAX_RESULTS, maxResults);
+							return true;
+							}
+						
+							if (handler->GetSession())
+							 handler->PSendSysMessage(LANG_GO_ENTRY_LIST_CHAT, itr->second.entry, itr->second.entry, name.c_str());
+						else
+							 handler->PSendSysMessage(LANG_GO_ENTRY_LIST_CONSOLE, itr->second.entry, name.c_str());
+						
+							if (!found)
+							 found = true;
+						
+							continue;
+						}
+					}
+				}
+
             std::string name = itr->second.name;
             if (name.empty())
                 continue;
