@@ -1143,6 +1143,12 @@ class ObjectMgr
 			if (itr == _questLocaleStore.end()) return NULL;
 			return &itr->second;
 		}
+		NpcTextLocale const* GetNpcTextLocale(uint32 entry) const
+		{
+			NpcTextLocaleContainer::const_iterator itr = _npcTextLocaleStore.find(entry);
+			if (itr == _npcTextLocaleStore.end()) return NULL;
+			return &itr->second;
+		}
 		PageTextLocale const* GetPageTextLocale(uint32 entry) const
 		 {
 			PageTextLocaleContainer::const_iterator itr = _pageTextLocaleStore.find(entry);
