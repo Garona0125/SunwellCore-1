@@ -10,6 +10,10 @@
 
 set(scripts_STAT_SRCS
   ${scripts_STAT_SRCS}
+#  ${sources_Custom}
+
+  
+  Custom/duel_reset.cpp
 )
 
 message("  -> Prepared: Custom")
