@@ -1162,6 +1162,11 @@ void ScriptMgr::OnPlayerCreate(Player* player)
     FOREACH_SCRIPT(PlayerScript)->OnCreate(player);
 }
 
+void ScriptMgr::OnPlayerSave(Player* player)
+{
+	FOREACH_SCRIPT(PlayerScript)->OnSave(player);
+}
+
 void ScriptMgr::OnPlayerDelete(uint64 guid)
 {
     FOREACH_SCRIPT(PlayerScript)->OnDelete(guid);

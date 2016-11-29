@@ -31,6 +31,7 @@
 #include "Unit.h"
 #include "Battleground.h"
 #include "WorldSession.h"
+#include "../../scripts/Custom/Transmog/Transmogrification.h"
 
 #include <string>
 #include <vector>
@@ -128,6 +129,18 @@ struct SpellModifier
     uint32 spellId;
     Aura* const ownerAura;
 };
+
+typedef std::unordered_map<uint64, uint32> TransmogMapType;
+
+#ifdef PRESETS
+typedef std::map<uint8, uint32> PresetslotMapType;
+struct PresetData
+ {
+	std::string name;
+	PresetslotMapType slotMap; // slotMap[slotId] = entry
+	};
+typedef std::map<uint8, PresetData> PresetMapType;
+#endif
 
 typedef UNORDERED_MAP<uint32, PlayerTalent*> PlayerTalentMap;
 typedef UNORDERED_MAP<uint32, PlayerSpell*> PlayerSpellMap;
@@ -2593,6 +2606,11 @@ class Player : public Unit, public GridObject<Player>
 		const PlayerTalentMap& GetTalentMap() const { return m_talents; }
 		uint32 GetNextSave() const { return m_nextSave; }
 		SpellModList const& GetSpellModList(uint32 type) const { return m_spellMods[type]; }
+
+		TransmogMapType transmogMap; // transmogMap[iGUID] = entry
+#ifdef PRESETS
+		PresetMapType presetMap; // presetMap[presetId] = presetData
+#endif
 
     protected:
         // Gamemaster whisper whitelist

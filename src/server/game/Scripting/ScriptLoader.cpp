@@ -26,6 +26,8 @@ void AddSC_example_gossip_codebox();
 void AddSC_example_misc();
 void AddSC_example_commandscript();
 void AddSC_DuelReset();
+void AddSC_PWS_Transmogrification();
+void AddSC_CS_Transmogrification();
 
 // spells
 void AddSC_deathknight_spell_scripts();
@@ -1253,5 +1255,7 @@ void AddCustomScripts()
 #ifdef SCRIPTS
     /* This is where custom scripts should be added. */
 	AddSC_DuelReset();
+	AddSC_PWS_Transmogrification();
+	AddSC_CS_Transmogrification();
 #endif
 }

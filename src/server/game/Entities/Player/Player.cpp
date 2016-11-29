@@ -85,6 +85,7 @@
 #include "GameObjectAI.h"
 #include "PoolMgr.h"
 #include "SavingSystem.h"
+#include "../../../scripts/Custom/Transmog/Transmogrification.h"
 
 #define ZONE_UPDATE_INTERVAL (2*IN_MILLISECONDS)
 
@@ -12658,7 +12659,10 @@ void Player::SetVisibleItemSlot(uint8 slot, Item* pItem)
 { 
     if (pItem)
     {
-		SetUInt32Value(PLAYER_VISIBLE_ITEM_1_ENTRYID + (slot * 2), pItem->GetEntry());
+		if (uint32 entry = sTransmogrification->GetFakeEntry(pItem))
+			 SetUInt32Value(PLAYER_VISIBLE_ITEM_1_ENTRYID + (slot * 2), entry);
+		else
+			 SetUInt32Value(PLAYER_VISIBLE_ITEM_1_ENTRYID + (slot * 2), pItem->GetEntry());
         SetUInt16Value(PLAYER_VISIBLE_ITEM_1_ENCHANTMENT + (slot * 2), 0, pItem->GetEnchantmentId(PERM_ENCHANTMENT_SLOT));
         SetUInt16Value(PLAYER_VISIBLE_ITEM_1_ENCHANTMENT + (slot * 2), 1, pItem->GetEnchantmentId(TEMP_ENCHANTMENT_SLOT));
     }
@@ -12781,7 +12785,8 @@ void Player::MoveItemFromInventory(uint8 bag, uint8 slot, bool update)
 { 
     if (Item* it = GetItemByPos(bag, slot))
     {
-        ItemRemovedQuestCheck(it->GetEntry(), it->GetCount());
+		sTransmogrification->DeleteFakeEntry(this, it);
+		ItemRemovedQuestCheck(it->GetEntry(), it->GetCount());
         RemoveItem(bag, slot, update);
 		UpdateTitansGrip();
         it->SetNotRefundable(this, false);
@@ -19228,6 +19233,8 @@ void Player::SaveToDB(bool create, bool logout)
 	
 	    // we save the data here to prevent spamming
     sAnticheatMgr->SavePlayerData(this);
+
+	sScriptMgr->OnPlayerSave(this);
 
     // in this way we prevent to spam the db by each report made!
     // sAnticheatMgr->SavePlayerData(this);

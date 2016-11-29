@@ -701,6 +701,9 @@ class PlayerScript : public ScriptObject
         // Called when a player is deleted.
         virtual void OnDelete(uint64 /*guid*/) { }
 
+		// Called when a player is about to be saved.
+		virtual void OnSave(Player* /*player*/) { }
+
         // Called when a player is bound to an instance
         virtual void OnBindToInstance(Player* /*player*/, Difficulty /*difficulty*/, uint32 /*mapId*/, bool /*permanent*/) { }
 
@@ -975,6 +978,7 @@ class ScriptMgr
         void OnPlayerCreate(Player* player);
         void OnPlayerDelete(uint64 guid);
         void OnPlayerBindToInstance(Player* player, Difficulty difficulty, uint32 mapid, bool permanent);
+		void OnPlayerSave(Player* player);
         void OnPlayerUpdateZone(Player* player, uint32 newZone, uint32 newArea);
 
     public: /* GuildScript */
