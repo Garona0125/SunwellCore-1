@@ -3225,5 +3225,10 @@ Transmogrification.SetCopperCost = 0
 #
 ###################################################################################################
 
+#     Chat.DisableWhenPlayerCreate
+#        Description: Disable chat for player who total played time not equal to X (in seconds)
+#        Default:     900 seconds   (equal to 15 minutes)
+ 
+Chat.DisableWhenPlayerCreate = 1200
 
-
+###################################################################################################

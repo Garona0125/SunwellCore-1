@@ -1245,6 +1245,8 @@ void World::LoadConfigSettings(bool reload)
 
     m_int_configs[CONFIG_BIRTHDAY_TIME] = sConfigMgr->GetIntDefault("BirthdayTime", 1222964635);
 
+	m_int_configs[CONFIG_INT_CHAT_DISABLE_TIME] = sConfigMgr->GetIntDefault("Chat.DisableWhenPlayerCreate", 60);
+
     // call ScriptMgr if we're reloading the configuration
     if (reload)
         sScriptMgr->OnConfigLoad(reload);
