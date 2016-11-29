@@ -149,7 +149,7 @@ BindIP = "0.0.0.0"
 #    UseProcessors
 #        Description: Processors mask for Windows based multi-processor systems.
 #        Default:     0  - (Selected by OS)
-#                     1+ - (Bit mask value of selected processors)
+#                     1 - (Bit mask value of selected processors)
 
 UseProcessors = 0
 
@@ -176,7 +176,7 @@ Compression = 1
 #          Important: If you want to block players and only allow Mods, GMs or Admins to join the
 #                     server, use the DB field "auth.realmlist.allowedSecurityLevel".
 #            Default: 100 - (Enabled)
-#                     1+  - (Enabled)
+#                     1  - (Enabled)
 #                     0   - (Disabled, No limit)
 
 PlayerLimit = 100
@@ -193,7 +193,7 @@ SaveRespawnTimeImmediately = 1
 #    MaxOverspeedPings
 #        Description: Maximum overspeed ping count before character is disconnected.
 #        Default:     2  - (Enabled, Minimum value)
-#                     3+ - (Enabled, More checks before kick)
+#                     3 - (Enabled, More checks before kick)
 #                     0  - (Disabled)
 
 MaxOverspeedPings = 2
@@ -255,7 +255,7 @@ PlayerSaveInterval = 900000
 #    PlayerSave.Stats.MinLevel
 #        Description: Minimum level for saving character stats in the database for external usage.
 #        Default:     0  - (Disabled, Do not save character stats)
-#                     1+ - (Enabled, Level beyond which character stats are saved)
+#                     1 - (Enabled, Level beyond which character stats are saved)
 
 PlayerSave.Stats.MinLevel = 0
 
@@ -306,8 +306,8 @@ DetectPosCollision = 1
 
 #
 #    TargetPosRecalculateRange
-#        Description: Max distance from movement target point (+moving unit size) and targeted
-#                     object (+size) after that new target movement point calculated.
+#        Description: Max distance from movement target point (moving unit size) and targeted
+#                     object (size) after that new target movement point calculated.
 #        Range:       0.5-5.0
 #        Default:     1.5
 #                     0.5 - (Minimum, Contact Range, More sensitive reaction to target movement)
@@ -319,7 +319,7 @@ TargetPosRecalculateRange = 1.5
 #    UpdateUptimeInterval
 #        Description: Update realm uptime period (in minutes).
 #        Default:     10 - (10 minutes)
-#                     1+
+#                     1
 
 UpdateUptimeInterval = 1
 
@@ -328,7 +328,7 @@ UpdateUptimeInterval = 1
 #        Description: Time (in minutes) for the WUPDATE_CLEANDB timer that clears the `logs` table
 #                     of old entries.
 #        Default:     10 - (10 minutes)
-#                     1+
+#                     1
 
 LogDB.Opt.ClearInterval = 10
 
@@ -344,7 +344,7 @@ LogDB.Opt.ClearTime = 1209600
 #    MaxCoreStuckTime
 #        Description: Time (in seconds) before the server is forced to crash if it is frozen.
 #        Default:     0   - (Disabled)
-#                     10+ - (Enabled, Recommended 10+)
+#                     10 - (Enabled, Recommended 10)
 
 MaxCoreStuckTime = 0
 
@@ -442,7 +442,7 @@ LogFileLevel = 0
 #                          categories.
 #                   2 - Anything related to pets.
 #                   4 - Anything related to vehicles.
-#                   8 - Anything related to C++ AI, instance scripts, etc.
+#                   8 - Anything related to C AI, instance scripts, etc.
 #                  16 - Anything related to DB AI, such as SAI, EAI, CreatureAI
 #                  32 - Anything related to DB map scripts
 #                  64 - Anything related to network input/output,
@@ -846,7 +846,7 @@ RealmZone = 1
 #                         Note: Client needs to have the appropriate fonts installed which support
 #                         the charset. For non-official localization, custom fonts need to be
 #                         placed in clientdir/Fonts.
-#                     3 - (Enabled, Basic Latin characters + server timezone specific)
+#                     3 - (Enabled, Basic Latin characters  server timezone specific)
 
 StrictPlayerNames = 0
 
@@ -860,7 +860,7 @@ StrictPlayerNames = 0
 #                         Note: Client needs to have the appropriate fonts installed which support
 #                         the charset. For non-official localization, custom fonts need to be
 #                         placed in clientdir/Fonts.
-#                     3 - (Enabled, Basic Latin characters + server timezone specific)
+#                     3 - (Enabled, Basic Latin characters  server timezone specific)
 
 StrictCharterNames = 0
 
@@ -874,7 +874,7 @@ StrictCharterNames = 0
 #                         Note: Client needs to have the appropriate fonts installed which support
 #                         the charset. For non-official localization, custom fonts need to be
 #                         placed in clientdir/Fonts.
-#                     3 - (Enabled, Basic Latin characters + server timezone specific)
+#                     3 - (Enabled, Basic Latin characters  server timezone specific)
 
 StrictPetNames = 0
 
@@ -956,7 +956,7 @@ CharacterCreating.Disabled = 0
 #
 #    CharacterCreating.Disabled.RaceMask
 #        Description: Mask of races which cannot be created by players.
-#        Example:     1536 - (1024 + 512, Blood Elf and Draenei races are disabled)
+#        Example:     1536 - (1024  512, Blood Elf and Draenei races are disabled)
 #        Default:     0    - (Enabled, All races are allowed)
 #                     1    - (Disabled, Human)
 #                     2    - (Disabled, Orc)
@@ -974,7 +974,7 @@ CharacterCreating.Disabled.RaceMask = 0
 #
 #    CharacterCreating.Disabled.ClassMask
 #        Description: Mask of classes which cannot be created by players.
-#        Example:     288 - (32 + 256, Death Knight and Warlock classes are disabled)
+#        Example:     288 - (32  256, Death Knight and Warlock classes are disabled)
 #        Default:     0    - (Enabled, All classes are allowed)
 #                     1    - (Disabled, Warrior)
 #                     2    - (Disabled, Paladin)
@@ -2362,8 +2362,8 @@ DurabilityLossChance.Block = 0.05
 #                           Level 11-19 characters will be affected for 1 minute,
 #                           Level 20-MaxPlayerLevel characters will be affected for 10 minutes)
 #         Default:    11               - (Enabled, See Example)
-#                     MaxPlayerLevel+1 - (Disabled)
-#                     -10              - (Enabled, Level 1+ characters have 10 minute duration)
+#                     MaxPlayerLevel1 - (Disabled)
+#                     -10              - (Enabled, Level 1 characters have 10 minute duration)
 
 Death.SicknessLevel = 11
 
@@ -2755,7 +2755,7 @@ CharDelete.Method = 0
 #    CharDelete.MinLevel
 #        Description: Required level to use the unlinking method if enabled.
 #        Default:     0  - (Same method for every level)
-#                     1+ - (Only characters with the specified level will use the unlinking method)
+#                     1 - (Only characters with the specified level will use the unlinking method)
 
 CharDelete.MinLevel = 0
 
@@ -2804,7 +2804,7 @@ PlayerStart.MapsExplored = 0
 #    HonorPointsAfterDuel
 #        Description: Amount of honor points the duel winner will get after a duel.
 #        Default:     0  - (Disabled)
-#                     1+ - (Enabled)
+#                     1 - (Enabled)
 
 HonorPointsAfterDuel = 0
 
@@ -3020,4 +3020,210 @@ DuelReset.Cooldown.Max.Energy.OnStart = 0
  
 DuelReset.Cooldown.Reset.Energy.OnStart = 1
 ###################################################################################################
+#    Transmogrification config
+###################################################################################################
+#
+#    SETTINGS
+#
+#    Logger.custom.transmog
+#        Description: Transmogrification logging setting, see logger settings
+#        Default:    3, Console Server
+#
+#    Transmogrification.EnableTransmogInfo
+#        Description: Enables / Disables the info button for transmogrification
+#        Default:    1
+#
+#    Transmogrification.TransmogNpcText
+#        Description: The npc_text entry of the info menu for transmogrification
+#        Default:    65000
+#
+#    Transmogrification.Allowed
+#        Description: A list of item entries that are allowed for transmogrification (skips quality and CanUseItem check)
+#                     Example: "25 35674 5623"
+#        Default:    ""
+#
+#    Transmogrification.NotAllowed
+#        Description: A list of item entries that are NOT allowed for transmogrification
+#                     Example: "25 35674 5623"
+#        Default:    ""
+
+Logger.custom.transmog = 3, Console Server
+
+Transmogrification.EnableTransmogInfo = 1
+Transmogrification.TransmogNpcText = 65000
+
+Transmogrification.Allowed = ""
+Transmogrification.NotAllowed = ""
+
+#
+#    COPPER COST
+#
+#    Transmogrification.ScaledCostModifier
+#        Description: A multiplier for the default gold cost (change to 0 for no default cost)
+#        Default:    1.0
+#
+#    Transmogrification.CopperCost
+#        Description: Cost added on top of other costs (can be negative)
+#        Default:    0
+#
+#    For custom gold cost set ScaledCostModifier to 0.0 and CopperCost to what ever cost you want
+
+Transmogrification.ScaledCostModifier = 1.0
+Transmogrification.CopperCost = 0
+
+#
+#    TOKEN COST
+#
+#    Transmogrification.RequireToken
+#        Description: Adds/disables token cost
+#        Default:    0
+#
+#    Transmogrification.TokenEntry
+#        Description: Entry of the token item
+#        Default:    49426
+#
+#    Transmogrification.TokenAmount
+#        Description: Amount of tokens required
+#        Default:    1
+
+Transmogrification.RequireToken = 0
+Transmogrification.TokenEntry = 49426
+Transmogrification.TokenAmount = 1
+
+#
+#    REQUIREMENTS
+#
+#    Transmogrification.AllowPoor
+#        Description: Allow poor quality items to be used as source and target items
+#        Default:    0
+#
+#    Transmogrification.AllowCommon
+#        Description: Allow common quality items to be used as source and target items
+#        Default:    0
+#
+#    Transmogrification.AllowUncommon
+#        Description: Allow uncommon quality items to be used as source and target items
+#        Default:    1
+#
+#    Transmogrification.AllowRare
+#        Description: Allow rare quality items to be used as source and target items
+#        Default:    1
+#
+#    Transmogrification.AllowEpic
+#        Description: Allow epic quality items to be used as source and target items
+#        Default:    1
+#
+#    Transmogrification.AllowLegendary
+#        Description: Allow legendary quality items to be used as source and target items
+#        Default:    0
+#
+#    Transmogrification.AllowArtifact
+#        Description: Allow artifact quality items to be used as source and target items
+#        Default:    0
+#
+#    Transmogrification.AllowHeirloom
+#        Description: Allow heirloom quality items to be used as source and target items
+#        Default:    1
+#
+#    Transmogrification.AllowMixedArmorTypes
+#        Description: Allow cloth items to be transmogrified with plate for example
+#        Default:    0
+#
+#    Transmogrification.AllowMixedWeaponTypes
+#        Description: Allow axe to be transmogrified with dagger for example
+#        Default:    0
+#
+#    Transmogrification.AllowFishingPoles
+#        Description: Allow fishing poles to be transmogrified
+#        Default:    0
+#
+#    Transmogrification.IgnoreReqRace
+#        Description: Ignore required race for source items
+#        Default:    0
+#
+#    Transmogrification.IgnoreReqClass
+#        Description: Ignore required class for source items
+#        Default:    0
+#
+#    Transmogrification.IgnoreReqSkill
+#        Description: Ignore required skill for source items
+#        Default:    0
+#
+#    Transmogrification.IgnoreReqSpell
+#        Description: Ignore required spell for source items
+#        Default:    0
+#
+#    Transmogrification.IgnoreReqLevel
+#        Description: Ignore required level for source items
+#        Default:    0
+#
+#    Transmogrification.IgnoreReqEvent
+#        Description: Ignore required event for source items
+#        Default:    0
+#
+#    Transmogrification.IgnoreReqStats
+#        Description: Ignore stat count > 0 requirement for source items
+#        Default:    0
+
+Transmogrification.AllowPoor = 0
+Transmogrification.AllowCommon = 0
+Transmogrification.AllowUncommon = 1
+Transmogrification.AllowRare = 1
+Transmogrification.AllowEpic = 1
+Transmogrification.AllowLegendary = 0
+Transmogrification.AllowArtifact = 0
+Transmogrification.AllowHeirloom = 1
+
+Transmogrification.AllowMixedArmorTypes = 0
+Transmogrification.AllowMixedWeaponTypes = 0
+Transmogrification.AllowFishingPoles = 0
+
+Transmogrification.IgnoreReqRace = 0
+Transmogrification.IgnoreReqClass = 0
+Transmogrification.IgnoreReqSkill = 0
+Transmogrification.IgnoreReqSpell = 0
+Transmogrification.IgnoreReqLevel = 0
+Transmogrification.IgnoreReqEvent = 0
+Transmogrification.IgnoreReqStats = 0
+
+#
+#    SET FEATURE
+#
+#    Transmogrification.EnableSets
+#        Description: Enables / Disables the set feature. If you want permanent disable, check Transmogrification.h
+#        Default:    1
+#
+#    Transmogrification.MaxSets
+#        Description: Maximum amount of sets a player can save (hardcap at 25)
+#        Default:    10
+#
+#    Transmogrification.EnableSetInfo
+#        Description: Enables / Disables the info button for set fature
+#        Default:    1
+#
+#    Transmogrification.SetNpcText
+#        Description: The npc_text entry of the info menu for the set feature
+#        Default:    65001
+#
+#    Transmogrification.SetCostModifier
+#        Description: A multiplier for the default gold cost (all costs summed together) (change to 0 for no default cost)
+#        Default:    3.0
+#
+#    Transmogrification.SetCopperCost
+#        Description: Cost added on top of other costs (can be negative)
+#        Default:    0
+
+Transmogrification.EnableSets = 1
+Transmogrification.MaxSets = 10
+
+Transmogrification.EnableSetInfo = 1
+Transmogrification.SetNpcText = 65001
+
+Transmogrification.SetCostModifier = 3.0
+Transmogrification.SetCopperCost = 0
+
+#
+###################################################################################################
+
+
 
