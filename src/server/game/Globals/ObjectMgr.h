@@ -1085,11 +1085,11 @@ class ObjectMgr
         }
 
 		BroadcastText const* GetBroadcastText(uint32 id) const
-		 {
-		BroadcastTextContainer::const_iterator itr = _broadcastTextStore.find(id);
-		if (itr != _broadcastTextStore.end())
-	    return &itr->second;
-		return nullptr;
+		{
+			BroadcastTextContainer::const_iterator itr = _broadcastTextStore.find(id);
+			if (itr != _broadcastTextStore.end())
+				return &itr->second;
+			return NULL;
 		}
 
         CreatureData const* GetCreatureData(uint32 guid) const
