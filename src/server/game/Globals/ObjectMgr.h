@@ -451,7 +451,7 @@ struct BroadcastText
 	}
 };
 
-typedef std::unordered_map<uint32, BroadcastText> BroadcastTextContainer;
+typedef UNORDERED_MAP<uint32, BroadcastText> BroadcastTextContainer;
 
 typedef std::set<uint32> CellGuidSet;
 typedef UNORDERED_MAP<uint32/*player guid*/, uint32/*instance*/> CellCorpseSet;
