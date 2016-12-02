@@ -79,6 +79,7 @@ enum WorldTimers
     WUPDATE_MAILBOXQUEUE,
     WUPDATE_PINGDB,
 	WUPDATE_5_SECS,
+	WUPDATE_EXTERNALMAIL,
     WUPDATE_COUNT
 };
 
@@ -146,6 +147,7 @@ enum WorldBoolConfigs
     CONFIG_DBC_ENFORCE_ITEM_ATTRIBUTES,
     CONFIG_PRESERVE_CUSTOM_CHANNELS,
     CONFIG_WINTERGRASP_ENABLE,
+	CONFIG_EXTERNAL_MAIL_ENABLE,
 	CONFIG_ANTICHEAT_ENABLE,
     CONFIG_PDUMP_NO_PATHS,
     CONFIG_PDUMP_NO_OVERWRITE,
@@ -319,6 +321,7 @@ enum WorldIntConfigs
     CONFIG_WINTERGRASP_NOBATTLETIME,
     CONFIG_WINTERGRASP_RESTART_AFTER_CRASH,
     CONFIG_WARDEN_CLIENT_RESPONSE_DELAY,
+	CONFIG_EXTERNAL_MAIL_INTERVAL,
     CONFIG_WARDEN_CLIENT_CHECK_HOLDOFF,
     CONFIG_WARDEN_CLIENT_FAIL_ACTION,
     CONFIG_WARDEN_CLIENT_BAN_DURATION,
@@ -548,6 +551,7 @@ class World
         WorldSession* FindOfflineSessionForCharacterGUID(uint32 guidLow) const;
         void AddSession(WorldSession* s);
         void SendAutoBroadcast();
+		void SendExternalMails();
         bool KickSession(uint32 id);
         /// Get the number of current active sessions
         void UpdateMaxSessionCounters();

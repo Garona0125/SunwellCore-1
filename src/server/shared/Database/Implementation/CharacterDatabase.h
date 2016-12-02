@@ -42,6 +42,8 @@ enum CharacterDatabaseStatements
         name for a suiting suffix.
     */
 
+	CHAR_GET_EXTERNAL_MAIL,
+	CHAR_DEL_EXTERNAL_MAIL,
     CHAR_DEL_QUEST_POOL_SAVE,
     CHAR_INS_QUEST_POOL_SAVE,
     CHAR_DEL_NONEXISTENT_GUILD_BANK_ITEM,

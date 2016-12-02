@@ -1247,6 +1247,10 @@ void World::LoadConfigSettings(bool reload)
 
 	m_int_configs[CONFIG_INT_CHAT_DISABLE_TIME] = sConfigMgr->GetIntDefault("Chat.DisableWhenPlayerCreate", 60);
 
+	// External Mail
+	m_bool_configs[CONFIG_EXTERNAL_MAIL_ENABLE] = sConfigMgr->GetBoolDefault("External.Mail.Enable", false);
+	m_int_configs[CONFIG_EXTERNAL_MAIL_INTERVAL] = sConfigMgr->GetIntDefault("External.Mail.Interval", 1);
+
     // call ScriptMgr if we're reloading the configuration
     if (reload)
         sScriptMgr->OnConfigLoad(reload);
@@ -1751,6 +1755,9 @@ void World::SetInitialWorldSettings()
 
     m_timers[WUPDATE_PINGDB].SetInterval(getIntConfig(CONFIG_DB_PING_INTERVAL)*MINUTE*IN_MILLISECONDS);    // Mysql ping time in minutes
 
+	//External mail
+	m_timers[WUPDATE_EXTERNALMAIL].SetInterval(getIntConfig(CONFIG_EXTERNAL_MAIL_INTERVAL) * MINUTE * IN_MILLISECONDS);
+
 	// our speed up
 	m_timers[WUPDATE_5_SECS].SetInterval(5*IN_MILLISECONDS);
 
@@ -2005,6 +2012,16 @@ void World::Update(uint32 diff)
         m_timers[WUPDATE_WEATHERS].Reset();
         WeatherMgr::Update(uint32(m_timers[WUPDATE_WEATHERS].GetInterval()));
     }
+
+	/// <li> Handle external mail updates when the timer has passed
+	if (sWorld->getBoolConfig(CONFIG_EXTERNAL_MAIL_ENABLE))
+		 {
+		if (m_timers[WUPDATE_EXTERNALMAIL].Passed())
+			 {
+			SendExternalMails();
+			m_timers[WUPDATE_EXTERNALMAIL].Reset();
+			}
+		}
 
 	sLFGMgr->Update(diff, 0); // pussywizard: remove obsolete stuff before finding compatibility during map update
 
@@ -2702,6 +2719,74 @@ void World::SendAutoBroadcast()
 
     ;//sLog->outDetail("AutoBroadcast: '%s'", msg.c_str());
 }
+
+void World::SendExternalMails()
+ {
+	sLog->outStaticDebug("entities.player", "External Mail> Sending mails in queue...");
+	
+		PreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_GET_EXTERNAL_MAIL);
+	PreparedQueryResult result = CharacterDatabase.Query(stmt);
+	if (!result)
+		 {
+		sLog->outStaticDebug("entities.player", "External Mail> No mails in queue...");
+		return;
+		}
+	
+		SQLTransaction trans = CharacterDatabase.BeginTransaction();
+	
+		MailDraft* mail = NULL;
+	
+		do
+		 {
+		Field *fields = result->Fetch();
+		uint32 id = fields[0].GetUInt32();
+		uint32 receiver_guid = fields[1].GetUInt32();
+		std::string subject = fields[2].GetString();
+		std::string body = fields[3].GetString();
+		uint32 money = fields[4].GetUInt32();
+		uint32 itemId = fields[5].GetUInt32();
+		uint32 itemCount = fields[6].GetUInt32();
+		
+			Player *receiver = ObjectAccessor::FindPlayer(receiver_guid);
+		
+			mail = new MailDraft(subject, body);
+		
+			if (money)
+			{
+			sLog->outStaticDebug("entities.player", "External Mail> Adding money");
+			mail->AddMoney(money);
+			}
+		
+			if (itemId)
+			{
+			if (!sObjectMgr->GetItemTemplate(itemId))
+				 {
+				sLog->outStaticDebug("sql.sql", "External Mail> Item entry %u from `mail_external` doesn't exist in DB, skipped.", itemId);
+				}
+			else
+				 {
+				sLog->outStaticDebug("entities.player", "External Mail> Adding %u of item with id %u", itemCount, itemId);
+				if (Item* mailItem = Item::CreateItem(itemId, itemCount))
+					 {
+					mailItem->SaveToDB(trans);
+					mail->AddItem(mailItem);
+					}
+				}
+			}
+		
+			mail->SendMailTo(trans, receiver ? receiver : MailReceiver(receiver_guid), MailSender(MAIL_NORMAL, 0, MAIL_STATIONERY_GM), MAIL_CHECK_MASK_RETURNED);
+		delete mail;
+		
+			stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_EXTERNAL_MAIL);
+		stmt->setUInt32(0, id);
+		trans->Append(stmt);
+		
+			sLog->outStaticDebug("entities.player", "External Mail> Mail sent");
+		} while (result->NextRow());
+		
+			CharacterDatabase.CommitTransaction(trans);
+		sLog->outStaticDebug("entities.player", "External Mail> All Mails Sent...");
+		}
 
 void World::UpdateRealmCharCount(uint32 accountId)
 {
