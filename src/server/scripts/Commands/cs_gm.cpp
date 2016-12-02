@@ -42,7 +42,7 @@ public:
         {
             { "chat",           SEC_GAMEMASTER,      false, &HandleGMChatCommand,              "", NULL },
             { "fly",            SEC_ADMINISTRATOR,  false, &HandleGMFlyCommand,               "", NULL },
-            //{ "ingame",         SEC_PLAYER,         true,  &HandleGMListIngameCommand,        "", NULL },
+            { "ingame",         SEC_PLAYER,         true,  &HandleGMListIngameCommand,        "", NULL },
             { "list",           SEC_ADMINISTRATOR,  true,  &HandleGMListFullCommand,          "", NULL },
             { "visible",        SEC_GAMEMASTER,      false, &HandleGMVisibleCommand,           "", NULL },
             { "",               SEC_GAMEMASTER,      false, &HandleGMCommand,                  "", NULL },
