@@ -955,6 +955,8 @@ enum TrinityStrings
     LANG_COMMAND_TICKETPENDING          = 2027,
     LANG_COMMAND_TICKETRESET            = 2028,
     LANG_COMMAND_TICKETLISTRESPONSE     = 2029,
+	LANG_COMMAND_TICKETCOMPLETEDBY      = 2030,
+	LANG_COMMAND_TICKETVIEWEDBY         = 2031,
 
     // Trinity strings                    5000-9999
     LANG_COMMAND_FREEZE                 = 5000,
