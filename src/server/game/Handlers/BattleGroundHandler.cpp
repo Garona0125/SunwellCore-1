@@ -443,7 +443,7 @@ void WorldSession::HandleBattleFieldPortOpcode(WorldPacket &recvData)
 					}
 
 				// send status packet
-				sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, bg, queueSlot, STATUS_IN_PROGRESS, 0, bg->GetStartTime(), bg->GetArenaType(), ginfo.teamId);
+				sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, bg, queueSlot, STATUS_IN_PROGRESS, 0, bg->GetStartTime(), bg->GetArenaType(), _player->GetBgTeamId());
 				SendPacket(&data);
 
 				_player->SetBattlegroundId(bg->GetInstanceID(), bg->GetBgTypeID(), queueSlot, true, bgTypeId == BATTLEGROUND_RB, ginfo.teamId);
