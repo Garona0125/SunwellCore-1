@@ -1116,14 +1116,14 @@ void Battleground::StartBattleground()
 
 void Battleground::AddPlayer(Player* player)
 {
-    // remove afk from player
-    if (player->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_AFK))
-        player->ToggleAFK();
-	
-    // score struct must be created in inherited class
+	// remove afk from player
+	if (player->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_AFK))
+		player->ToggleAFK();
 
-    uint64 guid = player->GetGUID();
-    TeamId teamId = player->GetTeamId();
+	// score struct must be created in inherited class
+
+	uint64 guid = player->GetGUID();
+	TeamId teamId = player->GetTeamId();
 
 	//Crossfaction bg
 	if ((m_PlayersCount[player->GetCFSTeamId()] > m_PlayersCount[GetOtherTeamId(player->GetCFSTeamId())]) && !isArena())
@@ -1132,77 +1132,82 @@ void Battleground::AddPlayer(Player* player)
 		player->mFake_team = GetOtherTeamId(player->GetCFSTeamId());
 		teamId = GetOtherTeamId(player->GetCFSTeamId());
 		/*if (player->m_bgData)
-			player->m_bgData.bgTeamId = GetOtherTeamId(player->GetCFSTeamId());*/
+		player->m_bgData.bgTeamId = GetOtherTeamId(player->GetCFSTeamId());*/
+		player->SetBGTeamId(teamId);
 		player->SetFakeRaceAndMorph();
-		player->MorphFit(player->GetFakeMorph());
-		sLog->outError("Crossfaction Bg: GetTeamId() = %u ; GetBgTeamId() = %u ; player->GetFakeMorph() = %u ;", player->GetTeamId(), player->GetBgTeamId(), player->GetFakeMorph());
+		player->MorphFit(true);
+		ChrRacesEntry const* rEntry;
+		if (teamId == TEAM_ALLIANCE)
+			player->setFaction(1);
+		else player->setFaction(2);
+
+		sLog->outError("Crossfaction Bg: GetTeamId() = %u ; GetBgTeamId() = %u ; player->GetFakeMorph() = %u ; player->getFaction() = %u", player->GetTeamId(), player->GetBgTeamId(), player->GetFakeMorph(), player->getFaction());
 		player->SendChatMessage("%sВы играете за %s%s на поле боя %s", MSG_COLOR_WHITE, player->GetTeamId() == TEAM_ALLIANCE ? MSG_COLOR_DARKBLUE"альянс" : MSG_COLOR_RED"орду", MSG_COLOR_WHITE, GetName());
 	}
 
-    // Add to list/maps
-    m_Players[guid] = player;
+	// Add to list/maps
+	m_Players[guid] = player;
 
-    UpdatePlayersCountByTeam(player->GetTeamId(), false);                  // +1 player
+	UpdatePlayersCountByTeam(player->GetTeamId(), false);                  // +1 player
 
-    WorldPacket data;
-    sBattlegroundMgr->BuildPlayerJoinedBattlegroundPacket(&data, player);
-    SendPacketToTeam(teamId, &data, player, false);
+	WorldPacket data;
+	sBattlegroundMgr->BuildPlayerJoinedBattlegroundPacket(&data, player);
+	SendPacketToTeam(teamId, &data, player, false);
 
-    player->RemoveAurasByType(SPELL_AURA_MOUNTED);
+	player->RemoveAurasByType(SPELL_AURA_MOUNTED);
 
-    // add arena specific auras
-    if (isArena())
-    {
-        player->RemoveArenaEnchantments(TEMP_ENCHANTMENT_SLOT);
-        if (player->GetTeamId() == TEAM_ALLIANCE)                                // gold
-        {
-            if (player->GetTeamId() == TEAM_HORDE)
-                player->CastSpell(player, SPELL_HORDE_GOLD_FLAG, true);
-            else
-                player->CastSpell(player, SPELL_ALLIANCE_GOLD_FLAG, true);
-        }
-        else                                                // green
-        {
-            if (player->GetTeamId() == TEAM_HORDE)
-                player->CastSpell(player, SPELL_HORDE_GREEN_FLAG, true);
-            else
-                player->CastSpell(player, SPELL_ALLIANCE_GREEN_FLAG, true);
-        }
+	// add arena specific auras
+	if (isArena())
+	{
+		player->RemoveArenaEnchantments(TEMP_ENCHANTMENT_SLOT);
+		if (player->GetTeamId() == TEAM_ALLIANCE)                                // gold
+		{
+			if (player->GetTeamId() == TEAM_HORDE)
+				player->CastSpell(player, SPELL_HORDE_GOLD_FLAG, true);
+			else
+				player->CastSpell(player, SPELL_ALLIANCE_GOLD_FLAG, true);
+		}
+		else                                                // green
+		{
+			if (player->GetTeamId() == TEAM_HORDE)
+				player->CastSpell(player, SPELL_HORDE_GREEN_FLAG, true);
+			else
+				player->CastSpell(player, SPELL_ALLIANCE_GREEN_FLAG, true);
+		}
 
 		// restore pets health before remove
 		if (Pet* pet = player->GetPet())
 			if (pet->IsAlive())
 				pet->SetHealth(pet->GetMaxHealth());
 
-        player->DestroyConjuredItems(true);
-        player->UnsummonPetTemporaryIfAny();
+		player->DestroyConjuredItems(true);
+		player->UnsummonPetTemporaryIfAny();
 
-        if (GetStatus() == STATUS_WAIT_JOIN)                 // not started yet
-        {
-            player->CastSpell(player, SPELL_ARENA_PREPARATION, true);
-            player->ResetAllPowers();
-        }
-    }
-    else
-    {
-        if (GetStatus() == STATUS_WAIT_JOIN)                 // not started yet
-            player->CastSpell(player, SPELL_PREPARATION, true);   // reduces all mana cost of spells.
-    }
+		if (GetStatus() == STATUS_WAIT_JOIN)                 // not started yet
+		{
+			player->CastSpell(player, SPELL_ARENA_PREPARATION, true);
+			player->ResetAllPowers();
+		}
+	}
+	else
+	{
+		if (GetStatus() == STATUS_WAIT_JOIN)                 // not started yet
+			player->CastSpell(player, SPELL_PREPARATION, true);   // reduces all mana cost of spells.
+	}
 
 	// Xinef: reset all map criterias on map enter
-    player->ResetAchievementCriteria(ACHIEVEMENT_CRITERIA_CONDITION_BG_MAP, GetMapId(), true);
+	player->ResetAchievementCriteria(ACHIEVEMENT_CRITERIA_CONDITION_BG_MAP, GetMapId(), true);
 
-    // setup BG group membership
-    PlayerAddedToBGCheckIfBGIsRunning(player);
-    AddOrSetPlayerToCorrectBgGroup(player, teamId);
-	
-    // Crossfaction bg
-    //player->FitPlayerInTeam(true, this);
+	// setup BG group membership
+	PlayerAddedToBGCheckIfBGIsRunning(player);
+	AddOrSetPlayerToCorrectBgGroup(player, teamId);
 
-    // Log
-    ;//sLog->outDetail("BATTLEGROUND: Player %s joined the battle.", player->GetName().c_str());
+	// Crossfaction bg
+	//player->FitPlayerInTeam(true, this);
+
+	// Log
+	;//sLog->outDetail("BATTLEGROUND: Player %s joined the battle.", player->GetName().c_str());
 }
-
 // this method adds player to his team's bg group, or sets his correct group if player is already in bg group
 void Battleground::AddOrSetPlayerToCorrectBgGroup(Player* player, TeamId teamId)
 {
