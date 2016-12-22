@@ -1116,6 +1116,8 @@ class Player : public Unit, public GridObject<Player>
             uint8 m_RealRace;
             uint32 m_FakeMorph;
             public:
+				TeamId m_team;
+				TeamId mFake_team;
                 typedef std::vector<uint64> FakePlayers;
                 void SendChatMessage(const char *format, ...);
                 void FitPlayerInTeam(bool action, Battleground* pBattleGround = NULL);          // void FitPlayerInTeam(bool action, Battleground* bg = NULL);
@@ -1135,8 +1137,8 @@ class Player : public Unit, public GridObject<Player>
                 void MorphFit(bool value);
                 bool IsPlayingNative() const { return GetTeamId() == m_team; }
                 TeamId GetCFSTeamId() const { return m_team; }
-                TeamId GetTeamId() const { return m_bgData.bgTeamId && GetBattleground() ? m_bgData.bgTeamId : m_team; }
-				TeamId GetBgTeamId() const { return m_bgData.bgTeamId ? m_bgData.bgTeamId : GetTeamId(); }
+                TeamId GetTeamId() const { return mFake_team != TEAM_NEUTRAL ? mFake_team : (m_bgData.bgTeamId && GetBattleground() ? m_bgData.bgTeamId : m_team); }
+				TeamId GetBgTeamId() const { return mFake_team != TEAM_NEUTRAL ? mFake_team : (m_bgData.bgTeamId ? m_bgData.bgTeamId : GetTeamId()); }
                 bool SendRealNameQuery();
                 FakePlayers m_FakePlayers;
 		
@@ -2766,7 +2768,6 @@ class Player : public Unit, public GridObject<Player>
         void outDebugValues() const;
         uint64 m_lootGuid;
 
-        TeamId m_team;
         uint32 m_nextSave; // pussywizard
         uint16 m_additionalSaveTimer; // pussywizard
         uint8 m_additionalSaveMask; // pussywizard

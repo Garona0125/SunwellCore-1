@@ -16,6 +16,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "../Cfbg/Cfbg.h"
 #include "ArenaTeam.h"
 #include "ArenaTeamMgr.h"
 #include "Battleground.h"
@@ -1062,12 +1063,16 @@ void Battleground::RemovePlayerAtLeave(Player* player)
 	player->RemoveAurasByType(SPELL_AURA_MOD_SHAPESHIFT);
 
     // Crossfaction bg
-    player->FitPlayerInTeam(false, this);
+    //player->FitPlayerInTeam(false, this);
 	
     player->SetBattlegroundId(0, BATTLEGROUND_TYPE_NONE, PLAYER_MAX_BATTLEGROUND_QUEUES, false, false, TEAM_NEUTRAL);
 
 	// Xinef: remove all criterias on bg leave
     player->ResetAchievementCriteria(ACHIEVEMENT_CRITERIA_CONDITION_BG_MAP, GetMapId(), true);
+	
+	player->mFake_team = TEAM_NEUTRAL;
+
+	player->InitDisplayIds();
 }
 
 // this method is called when creating bg
@@ -1114,12 +1119,25 @@ void Battleground::AddPlayer(Player* player)
     // remove afk from player
     if (player->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_AFK))
         player->ToggleAFK();
-
+	
     // score struct must be created in inherited class
 
     uint64 guid = player->GetGUID();
     TeamId teamId = player->GetTeamId();
 
+	//Crossfaction bg
+	if ((m_PlayersCount[player->GetCFSTeamId()] > m_PlayersCount[GetOtherTeamId(player->GetCFSTeamId())]) && !isArena())
+	{
+		sLog->outError("Crossfaction Bg: player->GetTeamId() = %u ; GetOtherTeamId(player->GetTeamId()) = %u ; m_PlayersCount[player->GetTeamId()] = %u ; m_PlayersCount[GetOtherTeamId(player->GetTeamId())] = %u", player->GetTeamId(), GetOtherTeamId(player->GetTeamId()), m_PlayersCount[player->GetTeamId()], m_PlayersCount[GetOtherTeamId(player->GetTeamId())]);
+		player->mFake_team = GetOtherTeamId(player->GetCFSTeamId());
+		teamId = GetOtherTeamId(player->GetCFSTeamId());
+		/*if (player->m_bgData)
+			player->m_bgData.bgTeamId = GetOtherTeamId(player->GetCFSTeamId());*/
+		player->SetFakeRaceAndMorph();
+		player->MorphFit(player->GetFakeMorph());
+		sLog->outError("Crossfaction Bg: GetTeamId() = %u ; GetBgTeamId() = %u ; player->GetFakeMorph() = %u ;", player->GetTeamId(), player->GetBgTeamId(), player->GetFakeMorph());
+		player->SendChatMessage("%sВы играете за %s%s на поле боя %s", MSG_COLOR_WHITE, player->GetTeamId() == TEAM_ALLIANCE ? MSG_COLOR_DARKBLUE"альянс" : MSG_COLOR_RED"орду", MSG_COLOR_WHITE, GetName());
+	}
 
     // Add to list/maps
     m_Players[guid] = player;
@@ -1179,7 +1197,7 @@ void Battleground::AddPlayer(Player* player)
     AddOrSetPlayerToCorrectBgGroup(player, teamId);
 	
     // Crossfaction bg
-    player->FitPlayerInTeam(true, this);
+    //player->FitPlayerInTeam(true, this);
 
     // Log
     ;//sLog->outDetail("BATTLEGROUND: Player %s joined the battle.", player->GetName().c_str());

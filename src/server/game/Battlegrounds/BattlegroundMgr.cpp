@@ -1063,7 +1063,7 @@ void BattlegroundMgr::InviteGroupToBG(GroupQueueInfo* ginfo, Battleground* bg, T
         bgQueue.PlayerInvitedToBGUpdateAverageWaitTime(ginfo);
 
         // increase invited counter for each invited player
-        bg->IncreaseInvitedCount(ginfo->teamId);
+        bg->IncreaseInvitedCount(player->GetTeamId());
 
         // create remind invite events
         BGQueueInviteEvent* inviteEvent = new BGQueueInviteEvent(player->GetGUID(), ginfo->IsInvitedToBGInstanceGUID, ginfo->BgTypeId, ginfo->ArenaType, ginfo->RemoveInviteTime);

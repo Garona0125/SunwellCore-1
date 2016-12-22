@@ -680,6 +680,7 @@ Player::Player(WorldSession* session): Unit(true), m_mover(this)
 #pragma warning(default:4355)
 #endif
 
+	mFake_team = TEAM_NEUTRAL;
     m_FakeRace = 0;
     m_RealRace = 0;
     m_FakeMorph = 0;

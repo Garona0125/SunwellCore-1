@@ -356,6 +356,11 @@ Creature* BattlegroundAV::AddAVCreature(uint16 cinfoid, uint16 type)
         }
     }
 
+    if (creature->GetEntry() == 13328) 
+        creature->setFaction(2);
+    if (creature->GetEntry() == 13326)
+        creature->setFaction(1);
+	
     return creature;
 }
 
