@@ -308,7 +308,7 @@ inline void Battleground::_CheckSafePositions(uint32 diff)
             GetTeamStartLoc(itr->second->GetTeamId(), x, y, z, o);
             if (pos.GetExactDistSq(x, y, z) > maxDist)
             {
-                ;//sLog->outDebug(LOG_FILTER_BATTLEGROUND, "BATTLEGROUND: Sending %s back to start location (map: %u) (possible exploit)", player->GetName().c_str(), GetMapId());
+                //sLog->outDebug(LOG_FILTER_BATTLEGROUND, "BATTLEGROUND: Sending %s back to start location (map: %u) (possible exploit)", player->GetName().c_str(), GetMapId());
                 itr->second->TeleportTo(GetMapId(), x, y, z, o);
             }
         }
@@ -992,87 +992,95 @@ void Battleground::RemovePlayerAtLeave(Player* player)
 {
 	TeamId teamId = player->GetTeamId();
 
-    // check if the player was a participant of the match, or only entered through gm command
-    bool participant = false;
-    BattlegroundPlayerMap::iterator itr = m_Players.find(player->GetGUID());
-    if (itr != m_Players.end())
-    {
-        UpdatePlayersCountByTeam(teamId, true); // -1 player
-        m_Players.erase(itr);
-        participant = true;
-    }
+	// check if the player was a participant of the match, or only entered through gm command
+	bool participant = false;
+	BattlegroundPlayerMap::iterator itr = m_Players.find(player->GetGUID());
+	if (itr != m_Players.end())
+	{
+		UpdatePlayersCountByTeam(teamId, true); // -1 player
+		m_Players.erase(itr);
+		participant = true;
+	}
 
 	// delete player score if exists
-    BattlegroundScoreMap::iterator itr2 = PlayerScores.find(player->GetGUID());
-    if (itr2 != PlayerScores.end())
-    {
-        delete itr2->second;
-        PlayerScores.erase(itr2);
-    }
+	BattlegroundScoreMap::iterator itr2 = PlayerScores.find(player->GetGUID());
+	if (itr2 != PlayerScores.end())
+	{
+		delete itr2->second;
+		PlayerScores.erase(itr2);
+	}
 
-    RemovePlayerFromResurrectQueue(player);
+	RemovePlayerFromResurrectQueue(player);
 
 	// resurrect on exit
-    if (!player->IsAlive())
-    {
-        player->ResurrectPlayer(1.0f);
-        player->SpawnCorpseBones();
-    }
+	if (!player->IsAlive())
+	{
+		player->ResurrectPlayer(1.0f);
+		player->SpawnCorpseBones();
+	}
 
-    player->RemoveAurasByType(SPELL_AURA_MOUNTED);
+	player->RemoveAurasByType(SPELL_AURA_MOUNTED);
 
 	// BG subclass specific code
-    RemovePlayer(player);
+	RemovePlayer(player);
 
 	// if the player was a match participant
-    if (participant)
-    {
-        WorldPacket data;
+	if (participant)
+	{
+		WorldPacket data;
 
-        player->ClearAfkReports();
+		player->ClearAfkReports();
 
-        //left a rated match in progress, consider as loser
-        if (isArena() && isRated() && GetStatus() == STATUS_IN_PROGRESS && teamId != TEAM_NEUTRAL)
-        {
-            ArenaTeam* winnerArenaTeam = sArenaTeamMgr->GetArenaTeamById(GetArenaTeamIdForTeam(GetOtherTeamId(teamId)));
-            ArenaTeam* loserArenaTeam = sArenaTeamMgr->GetArenaTeamById(GetArenaTeamIdForTeam(teamId));
-            if (winnerArenaTeam && loserArenaTeam && winnerArenaTeam != loserArenaTeam)
-                loserArenaTeam->MemberLost(player, GetArenaMatchmakerRating(GetOtherTeamId(teamId)));
-        }
+		//left a rated match in progress, consider as loser
+		if (isArena() && isRated() && GetStatus() == STATUS_IN_PROGRESS && teamId != TEAM_NEUTRAL)
+		{
+			ArenaTeam* winnerArenaTeam = sArenaTeamMgr->GetArenaTeamById(GetArenaTeamIdForTeam(GetOtherTeamId(teamId)));
+			ArenaTeam* loserArenaTeam = sArenaTeamMgr->GetArenaTeamById(GetArenaTeamIdForTeam(teamId));
+			if (winnerArenaTeam && loserArenaTeam && winnerArenaTeam != loserArenaTeam)
+				loserArenaTeam->MemberLost(player, GetArenaMatchmakerRating(GetOtherTeamId(teamId)));
+		}
 
-        sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, this, player->GetCurrentBattlegroundQueueSlot(), STATUS_NONE, 0, 0, 0, TEAM_NEUTRAL);
-        player->GetSession()->SendPacket(&data);
+		sBattlegroundMgr->BuildBattlegroundStatusPacket(&data, this, player->GetCurrentBattlegroundQueueSlot(), STATUS_NONE, 0, 0, 0, TEAM_NEUTRAL);
+		player->GetSession()->SendPacket(&data);
 
-        // remove from raid group if player is member
-        if (Group* group = GetBgRaid(teamId))
+		// remove from raid group if player is member
+		if (Group* group = GetBgRaid(teamId))
 			if (group->IsMember(player->GetGUID()))
 				if (!group->RemoveMember(player->GetGUID())) // group was disbanded
 					SetBgRaid(teamId, NULL);
 
-        // let others know
-        sBattlegroundMgr->BuildPlayerLeftBattlegroundPacket(&data, player->GetGUID());
-        SendPacketToTeam(teamId, &data, player, false);
+		// let others know
+		sBattlegroundMgr->BuildPlayerLeftBattlegroundPacket(&data, player->GetGUID());
+		SendPacketToTeam(teamId, &data, player, false);
 
 		// cast deserter
 		if (isBattleground() && !player->IsGameMaster() && sWorld->getBoolConfig(CONFIG_BATTLEGROUND_CAST_DESERTER))
 			if (GetStatus() == STATUS_IN_PROGRESS || GetStatus() == STATUS_WAIT_JOIN)
 				player->ScheduleDelayedOperation(DELAYED_SPELL_CAST_DESERTER);
-    }
+	}
 
 	// Remove shapeshift auras
 	player->RemoveAurasByType(SPELL_AURA_MOD_SHAPESHIFT);
 
-    // Crossfaction bg
-    //player->FitPlayerInTeam(false, this);
-	
-    player->SetBattlegroundId(0, BATTLEGROUND_TYPE_NONE, PLAYER_MAX_BATTLEGROUND_QUEUES, false, false, TEAM_NEUTRAL);
+	// Crossfaction bg
+	// player->FitPlayerInTeam(false, this);
+
+	player->mFake_team = TEAM_NEUTRAL;
+	teamId = player->GetCFSTeamId();
+	/*if (player->m_bgData)
+	player->m_bgData.bgTeamId = GetOtherTeamId(player->GetCFSTeamId());*/
+	player->SetBGTeamId(teamId);
+	player->SetFakeRaceAndMorph();
+	// player->SetFakeRace(player->getCFSRace());
+	player->MorphFit(false);
+		if (teamId == TEAM_ALLIANCE)
+		player->setFaction(1);
+	else player->setFaction(2); 
+
+	player->SetBattlegroundId(0, BATTLEGROUND_TYPE_NONE, PLAYER_MAX_BATTLEGROUND_QUEUES, false, false, TEAM_NEUTRAL);
 
 	// Xinef: remove all criterias on bg leave
-    player->ResetAchievementCriteria(ACHIEVEMENT_CRITERIA_CONDITION_BG_MAP, GetMapId(), true);
-	
-	player->mFake_team = TEAM_NEUTRAL;
-
-	player->InitDisplayIds();
+	player->ResetAchievementCriteria(ACHIEVEMENT_CRITERIA_CONDITION_BG_MAP, GetMapId(), true);
 }
 
 // this method is called when creating bg
