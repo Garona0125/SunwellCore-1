@@ -1149,6 +1149,10 @@ void Battleground::AddPlayer(Player* player)
 			player->setFaction(1);
 		else player->setFaction(2);
 
+		float x, y, z, o;
+		GetTeamStartLoc(teamId, x, y, z, o);
+		player->TeleportTo(GetMapId(), x, y, z, o);
+
 		sLog->outError("Crossfaction Bg: GetTeamId() = %u ; GetBgTeamId() = %u ; player->GetFakeMorph() = %u ; player->getFaction() = %u", player->GetTeamId(), player->GetBgTeamId(), player->GetFakeMorph(), player->getFaction());
 		player->SendChatMessage("%sВы играете за %s%s на поле боя %s", MSG_COLOR_WHITE, player->GetTeamId() == TEAM_ALLIANCE ? MSG_COLOR_DARKBLUE"альянс" : MSG_COLOR_RED"орду", MSG_COLOR_WHITE, GetName());
 	}
