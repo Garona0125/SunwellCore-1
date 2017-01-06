@@ -1059,9 +1059,15 @@ void World::LoadConfigSettings(bool reload)
     m_bool_configs[CONFIG_ARENA_SEASON_IN_PROGRESS]                  = sConfigMgr->GetBoolDefault("Arena.ArenaSeason.InProgress", true);
 	m_bool_configs[CONFIG_ARENA_QUEUE_ANNOUNCER_ENABLE]              = sConfigMgr->GetBoolDefault("Arena.QueueAnnouncer.Enable", false);
 
+	// Management for channels with flag CHANNEL_DBC_FLAG_CITY_ONLY
+	m_bool_configs[CONFIG_CHANNEL_ON_CITY_ONLY_FLAG]                 = sConfigMgr->GetBoolDefault("Channel.CityOnlyFlag", true);
+
     m_bool_configs[CONFIG_OFFHAND_CHECK_AT_SPELL_UNLEARN]            = sConfigMgr->GetBoolDefault("OffhandCheckAtSpellUnlearn", true);
 	
-    m_bool_configs[CROSSFACTION_SYSTEM_BATTLEGROUNDS] = sConfigMgr->GetBoolDefault("CrossFactionSystem.Battlegrounds", true);
+    m_bool_configs[CROSSFACTION_SYSTEM_BATTLEGROUNDS]                = sConfigMgr->GetBoolDefault("CrossFactionSystem.Battlegrounds", true);
+
+	m_bool_configs[CONFIG_BAN_PLAYER]                                = sConfigMgr->GetIntDefault("Anticheat.Ban", true);
+
 
     if (int32 clientCacheId = sConfigMgr->GetIntDefault("ClientCacheVersion", 0))
     {
@@ -1183,6 +1189,8 @@ void World::LoadConfigSettings(bool reload)
 
     m_bool_configs[CONFIG_NO_RESET_TALENT_COST] = sConfigMgr->GetBoolDefault("NoResetTalentsCost", false);
     m_bool_configs[CONFIG_SHOW_KICK_IN_WORLD] = sConfigMgr->GetBoolDefault("ShowKickInWorld", false);
+	m_bool_configs[CONFIG_SHOW_MUTE_IN_WORLD] = sConfigMgr->GetBoolDefault("ShowMuteInWorld", false);
+	m_bool_configs[CONFIG_SHOW_BAN_IN_WORLD] = sConfigMgr->GetBoolDefault("ShowBanInWorld", false);
     m_int_configs[CONFIG_INTERVAL_LOG_UPDATE] = sConfigMgr->GetIntDefault("RecordUpdateTimeDiffInterval", 60000);
     m_int_configs[CONFIG_MIN_LOG_UPDATE] = sConfigMgr->GetIntDefault("MinRecordUpdateTimeDiff", 100);
     m_int_configs[CONFIG_NUMTHREADS] = sConfigMgr->GetIntDefault("MapUpdate.Threads", 1);

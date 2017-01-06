@@ -2877,6 +2877,23 @@ Guild.AllowMultipleGuildMaster = 0
 
 ShowKickInWorld = 0
 
+#     ShowMuteInWorld
+#        Description: Determines whether a message is broadcasted to the entire server when a
+#                     player gets muted.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ShowMuteInWorld = 0
+
+#
+#     ShowBanInWorld
+#        Description: Determines whether a message is broadcasted to the entire server when a
+#                     player gets banned.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ShowBanInWorld = 0
+
 #
 #     RecordUpdateTimeDiffInterval
 #        Description: Time (in milliseconds) update time diff is written to the log file.
@@ -2959,6 +2976,14 @@ Anticheat.DetectionsEnabled = 31
 #        Default:     70
 
 Anticheat.MaxReportsForDailyReport = 70
+
+#     Anticheat.Ban
+#        Description: Make anticheat active (Ban cheaters character for 1 hour.)
+#        Default: 1 - (Enabled)
+#                 0 - (Disabled)
+#
+
+Anticheat.Ban = 1
 
 #
 #
@@ -3252,6 +3277,16 @@ External.Mail.Interval = 1
 #    CrossFactionSystem.Battlegrounds = 0 - Mixed battleground disabled.
 
 CrossFactionSystem.Battlegrounds = 1
+
+#
+###################################################################################################
+#
+#    Channel.CityOnlyFlag
+#        Description: Management for channels with flag CHANNEL_DBC_FLAG_CITY_ONLY.
+#        Default:    1 - (Enabled, Channels with flag CHANNEL_DBC_FLAG_CITY_ONLY will be activated in the cities only (blizzlike))
+#                    0 - (Disabled, Channels with flag CHANNEL_DBC_FLAG_CITY_ONLY will connected at any place)
+
+Channel.CityOnlyFlag = 1
 
 #
 ###################################################################################################
