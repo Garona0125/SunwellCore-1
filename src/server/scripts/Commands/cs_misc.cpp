@@ -2149,20 +2149,20 @@ public:
             int32 muteTime = -int32(notSpeakTime * MINUTE);
             stmt->setInt64(0, muteTime);
         }
-
-        stmt->setString(1, muteReasonStr.c_str());
+		
+		stmt->setString(1, muteReasonStr.c_str());
         stmt->setString(2, muteBy.c_str());
         stmt->setUInt32(3, accountId);
         LoginDatabase.Execute(stmt);
         std::string nameLink = handler->playerLink(targetName);
 		// pussywizard: notify all online GMs
-		/*TRINITY_READ_GUARD(HashMapHolder<Player>::LockType, *HashMapHolder<Player>::GetLock());
+		TRINITY_READ_GUARD(HashMapHolder<Player>::LockType, *HashMapHolder<Player>::GetLock());
 		HashMapHolder<Player>::MapType const& m = sObjectAccessor->GetPlayers();
 		for (HashMapHolder<Player>::MapType::const_iterator itr = m.begin(); itr != m.end(); ++itr)
 			if (itr->second->GetSession()->GetSecurity())
 				ChatHandler(itr->second->GetSession()).PSendSysMessage(target ? LANG_YOU_DISABLE_CHAT : LANG_COMMAND_DISABLE_CHAT_DELAYED, (handler->GetSession() ? handler->GetSession()->GetPlayerName().c_str() : "Console"), nameLink.c_str(), notSpeakTime, muteReasonStr.c_str());
 
-		return true; */
+		return true; 
 	}
     // unmute player
     static bool HandleUnmuteCommand(ChatHandler* handler, char const* args)
