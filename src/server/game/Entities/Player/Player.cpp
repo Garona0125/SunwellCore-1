@@ -2501,8 +2501,8 @@ void Player::ProcessDelayedOperations()
     if (m_DelayedOperations & DELAYED_SAVE_PLAYER)
         SaveToDB(false, false);
 
-    if (m_DelayedOperations & DELAYED_SPELL_CAST_DESERTER)
-        CastSpell(this, 26013, true);               // Deserter
+   // if (m_DelayedOperations & DELAYED_SPELL_CAST_DESERTER)
+     //   CastSpell(this, 26013, true);               // Deserter
 
     if (m_DelayedOperations & DELAYED_BG_MOUNT_RESTORE)
     {

@@ -229,9 +229,9 @@ bool BattlegroundQueue::CheckCrossFactionMatch(BattlegroundBracketId bracket_id,
        if (sBattlegroundMgr->isTesting() && (m_SelectionPools[TEAM_ALLIANCE].GetPlayerCount() || m_SelectionPools[TEAM_HORDE].GetPlayerCount()))
                return true;
 
-       uint8 MPT = bg->GetMinPlayersPerTeam();
-       if (m_SelectionPools[TEAM_ALLIANCE].GetPlayerCount() < MPT || m_SelectionPools[TEAM_HORDE].GetPlayerCount() < MPT)
-               return false;
+     //  uint8 MPT = bg->GetMinPlayersPerTeam();
+      // if (m_SelectionPools[TEAM_ALLIANCE].GetPlayerCount() < MPT || m_SelectionPools[TEAM_HORDE].GetPlayerCount() < MPT)
+       //        return false;
 
        return true;
 }
@@ -311,7 +311,7 @@ bool BattlegroundQueue::FillXPlayersToBG(BattlegroundBracketId bracket_id, Battl
                                continue;
 
                        diff = abs(valiFree - vhordeFree);
-                       bool moreAli = valiFree < vhordeFree;
+                       bool moreAli = valiFree > vhordeFree;
 
                        if (diff > 0)
                                ginfo->teamId = moreAli ? TEAM_HORDE : TEAM_ALLIANCE;

@@ -1134,17 +1134,17 @@ void Battleground::AddPlayer(Player* player)
 	TeamId teamId = player->GetTeamId();
 
 	//Crossfaction bg
-	if ((m_PlayersCount[player->GetCFSTeamId()] > m_PlayersCount[GetOtherTeamId(player->GetCFSTeamId())]) && !isArena())
+	 if ((m_PlayersCount[player->GetCFSTeamId()] > m_PlayersCount[GetOtherTeamId(player->GetCFSTeamId())]) && !isArena())
 	{
 		sLog->outError("Crossfaction Bg: player->GetTeamId() = %u ; GetOtherTeamId(player->GetTeamId()) = %u ; m_PlayersCount[player->GetTeamId()] = %u ; m_PlayersCount[GetOtherTeamId(player->GetTeamId())] = %u", player->GetTeamId(), GetOtherTeamId(player->GetTeamId()), m_PlayersCount[player->GetTeamId()], m_PlayersCount[GetOtherTeamId(player->GetTeamId())]);
 		player->mFake_team = GetOtherTeamId(player->GetCFSTeamId());
 		teamId = GetOtherTeamId(player->GetCFSTeamId());
-		/*if (player->m_bgData)
-		player->m_bgData.bgTeamId = GetOtherTeamId(player->GetCFSTeamId());*/
+		// if (player->m_bgData)
+		// player->m_bgData.bgTeamId = GetOtherTeamId(player->GetCFSTeamId());
 		player->SetBGTeamId(teamId);
 		player->SetFakeRaceAndMorph();
 		player->MorphFit(true);
-		ChrRacesEntry const* rEntry;
+		// ChrRacesEntry const* rEntry;
 		if (teamId == TEAM_ALLIANCE)
 			player->setFaction(1);
 		else player->setFaction(2);
@@ -1155,7 +1155,7 @@ void Battleground::AddPlayer(Player* player)
 
 		sLog->outError("Crossfaction Bg: GetTeamId() = %u ; GetBgTeamId() = %u ; player->GetFakeMorph() = %u ; player->getFaction() = %u", player->GetTeamId(), player->GetBgTeamId(), player->GetFakeMorph(), player->getFaction());
 		player->SendChatMessage("%sВы играете за %s%s на поле боя %s", MSG_COLOR_WHITE, player->GetTeamId() == TEAM_ALLIANCE ? MSG_COLOR_DARKBLUE"альянс" : MSG_COLOR_RED"орду", MSG_COLOR_WHITE, GetName());
-	}
+	} 
 
 	// Add to list/maps
 	m_Players[guid] = player;
